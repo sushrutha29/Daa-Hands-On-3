@@ -1,0 +1,86 @@
+#include <stdio.h>
+#include <stdlib.h>
+void mergesort(int array[], int left, int mid, int right) // merges two subarrays
+{
+    int i, j, k, n1, n2;
+    n1 = mid - left + 1;
+    n2 = right - mid;
+    
+    int p[n1], q[n2]; // create temporary arrays
+
+    for (i = 0; i < n1; i++)
+        p[i] = array[left + i];
+    for (j = 0; j < n2; j++)
+        q[j] = array[mid + 1 + j];
+
+//now merge the temporary arrays
+    i = 0;
+    j = 0;
+    k = left;
+    while (i < n1 && j < n2) 
+    {
+        if (p[i] <= q[j])
+        {
+            array[k] = p[i];
+            i++;
+        } else 
+        {
+            array[k] = q[j];
+            j++;
+        }
+        k++;
+    }
+
+    while (i < n1 || j < n2)
+    {
+    if (i < n1 && (j >= n2 || p[i] <= q[j])) 
+    {
+        array[k] = p[i];
+        i++;
+    } 
+    else 
+    {
+        array[k] = q[j];
+        j++;
+    }
+    k++;
+}
+}
+
+
+void mergeSort_algorithm(int array[], int left, int right) // to perform merge sort
+{
+    if (left < right) 
+    {
+        int mid = left + (right - left) / 2;
+        mergeSort_algorithm(array, left, mid);
+        mergeSort_algorithm(array, mid + 1, right);
+        mergesort(array, left, mid, right);
+    }
+}
+
+
+void print(int array[], int size) 
+{
+    for (int i = 0; i < size; i++)
+        printf("%d ", array[i]);
+    printf("\n");
+}
+
+
+int main()
+{
+    int array[] = {5, 2, 4, 7, 1, 3, 2, 6};
+    int size = sizeof(array) / sizeof(array[0]);
+
+    printf("Given array: ");
+    print(array, size);
+
+    mergeSort_algorithm(array, 0, size - 1);
+
+    printf("Final Sorted array: ");
+    print(array, size);
+
+    return 0;
+}
+
